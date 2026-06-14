@@ -2,8 +2,6 @@ package com.write4me.llama_flutter_android
 
 import android.app.ActivityManager
 import android.content.Context
-import android.content.Intent
-import androidx.core.content.ContextCompat
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicBoolean
@@ -40,10 +38,6 @@ class LlamaFlutterAndroidPlugin : FlutterPlugin, LlamaHostApi {
     override fun loadModel(config: ModelConfig, callback: (Result<Unit>) -> Unit) {
         scope.launch {
             try {
-                // Start foreground service for long-running task
-                val intent = Intent(context, InferenceService::class.java)
-                ContextCompat.startForegroundService(context, intent)
-
                 // Load model with progress callback
                 nativeLoadModel(
                     config.modelPath,
@@ -159,11 +153,7 @@ class LlamaFlutterAndroidPlugin : FlutterPlugin, LlamaHostApi {
                     nativeFreeModel()
                     isModelLoaded.set(false)
                 }
-                
-                // Stop foreground service
-                val intent = Intent(context, InferenceService::class.java)
-                context.stopService(intent)
-                
+
                 withContext(Dispatchers.Main) {
                     callback(Result.success(Unit))
                 }
