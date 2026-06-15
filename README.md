@@ -28,13 +28,27 @@ Run GGUF models on Android with [llama.cpp](https://github.com/ggerganov/llama.c
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+1) Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
   llama_flutter_android: ^0.2.0
 ```
+2) If not present, create the file `android/app/proguard-rules.pro` and add these lines:
+```kotlin
+-keep class com.write4me.llama_flutter_android.** { *; }
 
+-keep class kotlin.jvm.functions.Function1
+-keepclassmembers class * implements kotlin.jvm.functions.Function1 {
+    public java.lang.Object invoke(java.lang.Object);
+}
+
+-keep class com.write4me.llama_flutter_android.LlamaFlutterAndroidPlugin$* { *; }
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+```
 ## Quick Start
 
 ### Basic Usage
