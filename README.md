@@ -49,6 +49,22 @@ dependencies:
     native <methods>;
 }
 ```
+3) Then, add the `proguard-rules.pro` file in your android/app/build.gradle.kts
+
+```kotlin
+android {
+  buildTypes {
+        release {
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"    
+            )
+        }
+  }
+}
+```
+
 ## Quick Start
 
 ### Basic Usage
